@@ -9,15 +9,15 @@
 # Blog:         www.hiadmin.org
 # Copyright:    (c) 2013 by Sam.huang
 # Licence:      wxWindows license
-#----------------------------------------------------------------------
+#----------------------------------------------------------------------------
 import wx
 import wx.html2 as webview
+import wx.lib.inspection
+import wx.lib.mixins.inspection
 import sys, os
-import ConfigParser
-
-#----------------------------------------------------------------------
+assertMode = wx.PYAPP_ASSERT_DIALOG
 name = "Quality Center Browser"
-version = " 0.6"
+version = " 0.5"
 
 #----------------------------------------------------------------------
 class QualityCenterBrowser(wx.Panel):
@@ -25,14 +25,14 @@ class QualityCenterBrowser(wx.Panel):
     创建button、StaticText并绑定函数事件
 
     """
-    def __init__(self, parent,current, frame=None):
+    def __init__(self, parent, frame=None):
         wx.Panel.__init__(self, parent, -1)
-        self.current = current
+        self.current = "http://qcbrowser.duapp.com/"
         self.frame = frame      
         sizer = wx.BoxSizer(wx.VERTICAL)
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.wv = webview.WebView.New(self)
-        #显示地址栏URL地址
+        #self.Bind(webview.EVT_WEBVIEW_NAVIGATING, self.OnWebViewNavigating, self.wv)
         self.Bind(webview.EVT_WEBVIEW_LOADED, self.OnWebViewLoaded, self.wv)
         
         #创建回退按钮
@@ -57,14 +57,15 @@ class QualityCenterBrowser(wx.Panel):
         btnSizer.Add(txt, 0, wx.CENTER|wx.ALL, 2)
 
         #创建地址栏下来菜单中的URL地址列表
-        self.location = wx.ComboBox(self, -1, "", 
-                            style=wx.CB_DROPDOWN|wx.TE_PROCESS_ENTER)
+        self.location = wx.ComboBox(
+            self, -1, "", style=wx.CB_DROPDOWN|wx.TE_PROCESS_ENTER)
         self.location.AppendItems(['http://60.190.244.146:8090/qcbin',
                                    'http://qcbrowser.duapp.com/',
                                    'http://www.whatbrowser.org/intl/zh-CN/'])
         self.Bind(wx.EVT_COMBOBOX, self.OnLocationSelect, self.location)
         self.location.Bind(wx.EVT_TEXT_ENTER, self.OnLocationEnter)
         btnSizer.Add(self.location, 1, wx.EXPAND|wx.ALL, 2)
+
 
         sizer.Add(btnSizer, 0, wx.EXPAND)
         sizer.Add(self.wv, 1, wx.EXPAND)
@@ -78,6 +79,7 @@ class QualityCenterBrowser(wx.Panel):
         self.current = evt.GetURL()
         self.location.SetValue(self.current)
         
+
     # Control bar events
     def OnLocationSelect(self, evt):
         url = self.location.GetStringSelection()
@@ -105,26 +107,24 @@ class QualityCenterBrowser(wx.Panel):
               
 #----------------------------------------------------------------------
 def QCBrowserRun(frame, nb):
-    cf = ConfigParser.ConfigParser()
-    cf.read("config.ini")
-    current = cf.get("info","url") #默认主页
-    win = QualityCenterBrowser(nb,current)
+    win = QualityCenterBrowser(nb)
     return win
 
 #----------------------------------------------------------------------
-class QualityCenterBrowserApp(wx.App):
-    """创建窗口控件
-    """
-    def __init__(self, module):
+class QualityCenterBrowserApp(wx.App, wx.lib.mixins.inspection.InspectionMixin):
+    def __init__(self, name, module):
         self.name = name
         self.demoModule = module
-        wx.App.__init__(self)
+        wx.App.__init__(self, redirect=False)
 
     def OnInit(self):
+        self.SetAssertMode(assertMode)
+        self.InitInspection()  # for the InspectionMixin base class
         #设置浏览器窗口大小，名称等信息
-        frame = wx.Frame(None, -1, self.name + version, size=(950,650))
-        frame.SetIcon(wx.Icon("QCBrowser_48.ico",wx.BITMAP_TYPE_ICO))
-        frame.CreateStatusBar() #创建状态栏
+        frame = wx.Frame(None, -1, self.name + version, pos=(50,50), size=(950,650),
+                        style=wx.DEFAULT_FRAME_STYLE)
+        frame.CreateStatusBar() #创建状态窗口
+
         menuBar = wx.MenuBar() #创建菜单
         menu = wx.Menu()
         menuBar.Append(menu, "&about")
@@ -137,16 +137,17 @@ class QualityCenterBrowserApp(wx.App):
         
         frame.SetMenuBar(menuBar) #设置菜单
         frame.Show(True)
-        win = self.demoModule.QCBrowserRun(frame, frame)                
+        win = self.demoModule.QCBrowserRun(frame, frame)
+        self.frame = frame                    
         return True
 
 #----------------------------------------------------------------------------
 def QCBrowserApp(argv):
     import QCBrowser as module #动态加载模块
-    app = QualityCenterBrowserApp(module)
+    app = QualityCenterBrowserApp(name, module)
     app.MainLoop()
 
-#----------------------------------------------------------------------
+#----------------------------
 if __name__ == '__main__':
-    QCBrowserApp(['QCBrowser.py'])
+    QCBrowserApp(['','QCBrowser.py'])
 
