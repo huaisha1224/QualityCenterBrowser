@@ -17,8 +17,8 @@ import ConfigParser
 
 #----------------------------------------------------------------------
 name = "Quality Center Browser"
-version = " 0.7"
-Build = "20130912"
+version = " 0.8"
+Build = "20130913"
 
 #----------------------------------------------------------------------
 class QualityCenterBrowser(wx.Panel):
@@ -26,9 +26,9 @@ class QualityCenterBrowser(wx.Panel):
     创建button、StaticText并绑定函数事件
 
     """
-    def __init__(self, parent,current, frame=None):
+    def __init__(self, parent,HomePage, frame=None):
         wx.Panel.__init__(self, parent, -1)
-        self.current = current
+        self.HomePage = HomePage
         self.frame = frame      
         sizer = wx.BoxSizer(wx.VERTICAL)
         btnSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -37,21 +37,21 @@ class QualityCenterBrowser(wx.Panel):
         self.Bind(webview.EVT_WEBVIEW_LOADED, self.OnWebViewLoaded, self.wv)
         
         #创建回退按钮
-        btn = wx.BitmapButton(self, -1, wx.Bitmap("src/retreat_16.png"),
+        btn = wx.BitmapButton(self, -1, wx.Bitmap("src/left.png"),
                                 style=wx.BU_EXACTFIT)
         self.Bind(wx.EVT_BUTTON, self.OnPrevPageButton, btn)
         btnSizer.Add(btn, 0, wx.EXPAND|wx.ALL, 2)
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckCanGoBack, btn)
 
         #创建前进按钮
-        btn = wx.BitmapButton(self, -1, wx.Bitmap("src/forward_16.png"),
+        btn = wx.BitmapButton(self, -1, wx.Bitmap("src/right.png"),
                                 style=wx.BU_EXACTFIT)
         self.Bind(wx.EVT_BUTTON, self.OnNextPageButton, btn)
         btnSizer.Add(btn, 0, wx.EXPAND|wx.ALL, 2)
         self.Bind(wx.EVT_UPDATE_UI, self.OnCheckCanGoForward, btn)
 
         #创建刷新按钮
-        btn = wx.BitmapButton(self, -1,wx.Bitmap("src/refresh_16.png"),
+        btn = wx.BitmapButton(self, -1,wx.Bitmap("src/reload.png"),
                                 style=wx.BU_EXACTFIT)
         self.Bind(wx.EVT_BUTTON, self.OnRefreshPageButton, btn)
         btnSizer.Add(btn, 0, wx.EXPAND|wx.ALL, 2)
@@ -72,14 +72,14 @@ class QualityCenterBrowser(wx.Panel):
         sizer.Add(btnSizer, 0, wx.EXPAND)
         sizer.Add(self.wv, 1, wx.EXPAND)
         self.SetSizer(sizer)
-        self.wv.LoadURL(self.current)
+        self.wv.LoadURL(self.HomePage)
 
 
     # WebView events
     def OnWebViewLoaded(self, evt):
         # 地址栏显示完整的URL地址
-        self.current = evt.GetURL()
-        self.location.SetValue(self.current)
+        self.HomePage = evt.GetURL()
+        self.location.SetValue(self.HomePage)
         
     # Control bar events
     def OnLocationSelect(self, evt):
@@ -114,14 +114,13 @@ def QCBrowserRun(frame, nb):
     if os.path.exists("config.ini") == True: 
         cf = ConfigParser.ConfigParser()
         cf.read("config.ini")
-        current = cf.get("info","url") #默认主页
-        if "192.168" not in current:
-            current = "http://qc.hiadmin.org"
+        HomePage = cf.get("info","url") #默认主页
+        if "192.168" not in HomePage:
+            HomePage = "http://qc.hiadmin.org"
     else:
-        current = "http://qc.hiadmin.org"
-        print "QC"
+        HomePage = "http://qc.hiadmin.org"
 
-    win = QualityCenterBrowser(nb,current)
+    win = QualityCenterBrowser(nb,HomePage)
     return win
 
 #----------------------------------------------------------------------
@@ -136,7 +135,7 @@ class QualityCenterBrowserApp(wx.App):
     def OnInit(self):
         #设置浏览器窗口大小，名称等信息
         frame = wx.Frame(None, -1, self.name + version, size=(950,650))
-        frame.SetIcon(wx.Icon("src\QCBrowser_48.ico",wx.BITMAP_TYPE_ICO))
+        frame.SetIcon(wx.Icon("src\QCBrowser_32.ico",wx.BITMAP_TYPE_ICO))
         frame.CreateStatusBar() #创建状态栏
         menuBar = wx.MenuBar() #创建菜单
         menu = wx.Menu()
