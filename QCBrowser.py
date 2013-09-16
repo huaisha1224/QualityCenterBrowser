@@ -14,11 +14,12 @@ import wx
 import wx.html2 as webview
 import sys, os
 import ConfigParser
+import webbrowser
 
 #----------------------------------------------------------------------
 name = "Quality Center Browser"
-version = " 0.8"
-Build = "20130913"
+version = " 0.9"
+Build = "20130916"
 
 #----------------------------------------------------------------------
 class QualityCenterBrowser(wx.Panel):
@@ -139,7 +140,10 @@ class QualityCenterBrowserApp(wx.App):
         frame.CreateStatusBar() #创建状态栏
         menuBar = wx.MenuBar() #创建菜单
         menu = wx.Menu()
-        menuBar.Append(menu, "&about")
+        #增加help按钮、点击之后打开帮助页面
+        item = menu.Append(wx.ID_EXIT, "Help\tF1", "Open HomePage")
+        self.Bind(wx.EVT_MENU, self.OnOpenUrl, item)
+        menuBar.Append(menu, "&File")
 
         ns = {}
         ns['wx'] = wx
@@ -151,6 +155,10 @@ class QualityCenterBrowserApp(wx.App):
         frame.Show(True)
         win = self.demoModule.QCBrowserRun(frame, frame)                
         return True
+
+    def OnOpenUrl(self, evt):
+        webbrowser.open_new_tab("http://qc.hiadmin.org/qa/")
+
 
 #----------------------------------------------------------------------------
 def QCBrowserApp(argv):
