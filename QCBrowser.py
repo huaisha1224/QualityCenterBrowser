@@ -156,6 +156,7 @@ def QCBrowserRun(frame, nb):
 
     win = QualityCenterBrowser(nb,HomePage)
     return win
+    
 
 #----------------------------------------------------------------------
 class QualityCenterBrowserApp(wx.App):
