@@ -121,24 +121,8 @@ class QualityCenterBrowser(wx.Panel):
     def OnHelpUrl(self, evt):
         webbrowser.open_new_tab("http://qc.hiadmin.org/qa/")
 
-
     def OnUpdate(self,evt):
-        """
-        更新函数、下载更新文件，对比里面的Build版本号
-        """
-        url = "http://qc.hiadmin.org/upload/version.py"
-        text = requests.get(url)
-        if text.status_code == 200:
-            with open("version.py","wb") as code:
-                code.write(text.content)
-            import version
-            if Build < version.VersionInfo():
-                #print "YES"
-                webbrowser.open_new_tab("http://qc.hiadmin.org/download/")
-            elif Build >= version.VersionInfo():
-                webbrowser.open_new_tab("http://qc.hiadmin.org/download/")
-        else:pass
-            #print "NO"
+        webbrowser.open_new_tab("http://qc.hiadmin.org/download/")
               
 #----------------------------------------------------------------------
 def QCBrowserRun(frame, nb):
