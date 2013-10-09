@@ -18,8 +18,8 @@ import webbrowser
 
 #----------------------------------------------------------------------
 name = "Quality Center Browser"
-version = " 1.0"
-Build = "20130918"
+version = " 1.1"
+Build = "20131009"
 
 #----------------------------------------------------------------------
 class QualityCenterBrowser(wx.Panel):
