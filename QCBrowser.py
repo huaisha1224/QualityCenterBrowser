@@ -13,7 +13,6 @@
 import wx
 import wx.html2 as webview
 import sys, os
-import requests
 import ConfigParser
 import webbrowser
 
@@ -53,6 +52,11 @@ class QualityCenterBrowser(wx.Panel):
         #创建刷新按钮
         btn = wx.BitmapButton(self, -1,wx.Bitmap("src/Reload.png"))
         self.Bind(wx.EVT_BUTTON, self.OnRefreshPageButton, btn)
+        btnSizer.Add(btn, 0, wx.EXPAND|wx.ALL, 2)
+
+        #创建一个主页按钮
+        btn = wx.BitmapButton(self, -1,wx.Bitmap("src/Home.png"))
+        self.Bind(wx.EVT_BUTTON, self.OnHomePage, btn)
         btnSizer.Add(btn, 0, wx.EXPAND|wx.ALL, 2)
 
         #创建txt描述
@@ -117,6 +121,10 @@ class QualityCenterBrowser(wx.Panel):
 
     def OnRefreshPageButton(self, evt):
         self.wv.Reload()
+    #按钮主页事件
+    def OnHomePage(self, event):
+        url = HomePage
+        self.wv.LoadURL(url)
 
     def OnHelpUrl(self, evt):
         webbrowser.open_new_tab("http://qc.hiadmin.org/qa/")
@@ -132,6 +140,7 @@ def QCBrowserRun(frame, nb):
     if os.path.exists("config.ini") == True: 
         cf = ConfigParser.ConfigParser()
         cf.read("config.ini")
+        global HomePage
         HomePage = cf.get("info","url") #默认主页
         if "192.168" not in HomePage:
             HomePage = "http://qc.hiadmin.org/direction/"
@@ -140,7 +149,6 @@ def QCBrowserRun(frame, nb):
 
     win = QualityCenterBrowser(nb,HomePage)
     return win
-    
 
 #----------------------------------------------------------------------
 class QualityCenterBrowserApp(wx.App):
@@ -164,7 +172,7 @@ class QualityCenterBrowserApp(wx.App):
         ns['frame'] = frame
         
         frame.Show(True)
-        win = self.demoModule.QCBrowserRun(frame, frame)          
+        win = self.demoModule.QCBrowserRun(frame, frame)     
         return True
 
 #----------------------------------------------------------------------------
