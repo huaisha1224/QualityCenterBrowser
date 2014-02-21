@@ -15,3 +15,8 @@ QualityCenterBrowser
 ### Platforms
 - Python2.x
 - wxpython2.9.x
+
+编译版本下载
+------------------------
+
+- [QC浏览器](http://qc.hiadmin.org/)
