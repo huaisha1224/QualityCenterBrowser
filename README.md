@@ -15,6 +15,7 @@ QualityCenterBrowser
 ### Platforms
 - Python2.7.5
 - wxpython2.9.5
+- Requests2.1
 
 编译版本下载
 ------------------------
