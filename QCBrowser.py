@@ -7,7 +7,7 @@
 # Author:       Sam Huang
 # Email:        sam.hxq@gmail.com
 # Blog:         www.hiadmin.org
-# Copyright:    (c) 2013 by Sam.huang
+# Copyright:    (c) 2014 by Sam.huang
 # Licence:      wxWindows license
 #----------------------------------------------------------------------
 import wx
@@ -15,11 +15,11 @@ import wx.html2 as webview
 import sys, os
 import ConfigParser
 import webbrowser
-
+import requests
 #----------------------------------------------------------------------
 name = "Quality Center Browser"
-version = " 1.1"
-Build = "20131009"
+version = " 1.2"
+Build = "201410710"
 
 #----------------------------------------------------------------------
 class QualityCenterBrowser(wx.Panel):
@@ -142,8 +142,8 @@ def QCBrowserRun(frame, nb):
         cf.read("config.ini")
         global HomePage
         HomePage = cf.get("info","url") #默认主页
-        if "192.168" not in HomePage:
-            HomePage = "http://qc.hiadmin.org/direction/"
+        #if "192.168" not in HomePage:
+            #HomePage = "http://qc.hiadmin.org/direction/"
     else:
         HomePage = "http://qc.hiadmin.org/direction/"
 
@@ -183,5 +183,6 @@ def QCBrowserApp(argv):
 
 #----------------------------------------------------------------------
 if __name__ == '__main__':
+    
     QCBrowserApp(['QCBrowser.py'])
 
