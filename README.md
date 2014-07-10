@@ -13,8 +13,8 @@ QualityCenterBrowser
 要求
 -------------------------
 ### Platforms
-- Python2.x
-- wxpython2.9.x
+- Python2.7.5
+- wxpython2.9.5
 
 编译版本下载
 ------------------------
