@@ -183,6 +183,7 @@ def QCBrowserApp(argv):
 
 #----------------------------------------------------------------------
 if __name__ == '__main__':
-    
+    tongji = "http://qc.hiadmin.org/tongji.html"
+    t = requests.get(tongji)
     QCBrowserApp(['QCBrowser.py'])
 
