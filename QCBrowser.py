@@ -3,6 +3,7 @@
 #!filename:QCBrowser.py
 #Python3.6
 #-------------------------------------------------------------------
+
 # Name:         QCBrowser.py
 # Purpose:      用于访问HP Quality Center服务器的浏览器客户端
 # Author:       Sam Huang
@@ -10,11 +11,11 @@
 # Blog:         www.hiadmin.org
 # Copyright:    (c) 2018 by Sam.huang
 # Licence:      wxWindows license
-
 #---------------------------------------------------------------------
 name = "Quality Center Browser"
 version = " 1.5"
 Build = "20180321"
+
 #---------------------------------------------------------------------
 import wx
 import wx.html2 as webview
@@ -22,9 +23,8 @@ import sys, os
 import requests
 import webbrowser
 import configparser
-
-
 #----------------------------------------------------------------------
+
 
 class QualityCenterBrowser(wx.Panel):
     """创建主函数
@@ -73,7 +73,8 @@ class QualityCenterBrowser(wx.Panel):
 
         self.location = wx.ComboBox(
             self, -1, "", style=wx.CB_DROPDOWN|wx.TE_PROCESS_ENTER)
-        self.location.AppendItems('http://qc.hiadmin.org')
+        self.location.AppendItems(['http://qc.hiadmin.org',
+                                  'http://qc.hiadmin.org/ua.html'])
         self.Bind(wx.EVT_COMBOBOX, self.OnLocationSelect, self.location)
         self.location.Bind(wx.EVT_TEXT_ENTER, self.OnLocationEnter)
         btnSizer.Add(self.location, 1, wx.EXPAND|wx.ALL, 2)
@@ -148,8 +149,6 @@ class QualityCenterBrowser(wx.Panel):
         webbrowser.open_new_tab("http://qc.hiadmin.org/download/")
 #----------------------------------------------------------------------
 
-
-#----------------------------------------------------------------------
 def QCBrowserRun(frame, nb):
     """
     如果配置文件存在就从配置文件里面读取配置信息、否则就默认配置
@@ -166,12 +165,11 @@ def QCBrowserRun(frame, nb):
 
     win = QualityCenterBrowser(nb,HomePage)
     return win
-
 #----------------------------------------------------------------------
+
 class QualityCenterBrowserApp(wx.App):
     """创建窗口控件
     """
-
     def __init__(self, module):
         self.name = name
         self.demoModule = module
@@ -179,7 +177,7 @@ class QualityCenterBrowserApp(wx.App):
 
     def OnInit(self):
         # 设置浏览器窗口大小，名称等信息
-        frame = wx.Frame(None, -1, self.name + version, size=(1027, 768))
+        frame = wx.Frame(None, -1, self.name + version, size=(1080, 800))
         frame.SetIcon(wx.Icon("src\QCBrowser_32.ico", wx.BITMAP_TYPE_ICO))
         frame.CreateStatusBar()  # 创建状态栏
 
@@ -192,13 +190,13 @@ class QualityCenterBrowserApp(wx.App):
         frame.Show(True)
         win = self.demoModule.QCBrowserRun(frame, frame)
         return True
-
 #----------------------------------------------------------------------------
+
 def QCBrowserApp(argv):
     import QCBrowser as module #动态加载模块
     app = QualityCenterBrowserApp(module)
     app.MainLoop()
-
 #----------------------------------------------------------------------
+
 if __name__ == '__main__':
     QCBrowserApp(['QCBrowser.py'])
