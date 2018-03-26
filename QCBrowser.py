@@ -12,11 +12,12 @@
 # Copyright:    (c) 2018 by Sam.huang
 # Licence:      wxWindows license
 #---------------------------------------------------------------------
+
 name = "Quality Center Browser"
 version = " 1.5"
 Build = "20180321"
-
 #---------------------------------------------------------------------
+
 import wx
 import wx.html2 as webview
 import sys, os
