@@ -50,22 +50,22 @@ class QualityCenterBrowser(wx.Panel):
 
 
         #创建返回按钮
-        btn = wx.BitmapButton(self, -1, wx.Bitmap("src/Left.png"))
+        btn = wx.BitmapButton(self, -1, wx.Bitmap('src/Left.png'))
         self.Bind(wx.EVT_BUTTON, self.OnPrevPageButton, btn)
         btnSizer.Add(btn, 0, wx.EXPAND|wx.ALL, 2)
 
         #创建前进按钮
-        btn = wx.BitmapButton(self, -1, wx.Bitmap("src/Right.png"))
+        btn = wx.BitmapButton(self, -1, wx.Bitmap('src/Right.png'))
         self.Bind(wx.EVT_BUTTON, self.OnNextPageButton, btn)
         btnSizer.Add(btn, 0, wx.EXPAND|wx.ALL, 2)
 
         #创建刷新按钮
-        btn = wx.BitmapButton(self, -1, wx.Bitmap("src/Reload.png"))
+        btn = wx.BitmapButton(self, -1, wx.Bitmap('src/Reload.png'))
         self.Bind(wx.EVT_BUTTON, self.OnStopButton, btn)
         btnSizer.Add(btn, 0, wx.EXPAND|wx.ALL, 2)
 
         #创建一个主页按钮
-        btn = wx.BitmapButton(self, -1,wx.Bitmap("src/Home.png"))
+        btn = wx.BitmapButton(self, -1,wx.Bitmap('src/Home.png'))
         self.Bind(wx.EVT_BUTTON, self.OnHomePage, btn)
         btnSizer.Add(btn, 0, wx.EXPAND|wx.ALL, 2)
 
