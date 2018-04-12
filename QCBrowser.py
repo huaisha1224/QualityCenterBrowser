@@ -69,7 +69,7 @@ class QualityCenterBrowser(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.OnHomePage, btn)
         btnSizer.Add(btn, 0, wx.EXPAND|wx.ALL, 2)
 
-        txt = wx.StaticText(self, -1, "Address:")
+        txt = wx.StaticText(self, -1, 'Address:')
         btnSizer.Add(txt, 0, wx.CENTER|wx.ALL, 2)
 
         self.location = wx.ComboBox(
@@ -81,13 +81,13 @@ class QualityCenterBrowser(wx.Panel):
         btnSizer.Add(self.location, 1, wx.EXPAND|wx.ALL, 2)
 
         #创建帮助按钮
-        btn = wx.BitmapButton(self, -1,wx.Bitmap("src/Help.png"))
+        btn = wx.BitmapButton(self, -1,wx.Bitmap('src/Help.png'))
         #btn = wx.Button(self, -1, "Help", style=wx.BU_EXACTFIT)
         self.Bind(wx.EVT_BUTTON, self.OnHelpUrl, btn)
         btnSizer.Add(btn, 0, wx.EXPAND|wx.ALL, 2)
 
         #创建升级按钮
-        btn = wx.BitmapButton(self, -1,wx.Bitmap("src/Download.png"))
+        btn = wx.BitmapButton(self, -1,wx.Bitmap('src/Download.png'))
         self.Bind(wx.EVT_BUTTON, self.OnUpdate, btn)
         btnSizer.Add(btn, 0, wx.EXPAND|wx.ALL, 2)
 
@@ -144,25 +144,25 @@ class QualityCenterBrowser(wx.Panel):
         self.wv.LoadURL(url)
 
     def OnHelpUrl(self, evt):
-        webbrowser.open_new_tab("http://qc.hiadmin.org/qa/")
+        webbrowser.open_new_tab('http://qc.hiadmin.org/qa/')
 
     def OnUpdate(self,evt):
-        webbrowser.open_new_tab("http://qc.hiadmin.org/download/")
+        webbrowser.open_new_tab('http://qc.hiadmin.org/download/')
 #----------------------------------------------------------------------
 
 def QCBrowserRun(frame, nb):
     """
     如果配置文件存在就从配置文件里面读取配置信息、否则就默认配置
     """
-    if os.path.exists("config.ini") == True:
+    if os.path.exists('config.ini') == True:
         cf = configparser.ConfigParser()
-        cf.read("config.ini")
+        cf.read('config.ini')
         global HomePage
-        HomePage = cf.get("info","url") #默认主页
+        HomePage = cf.get('info','url') #默认主页
         if "192.168" not in HomePage:
-            HomePage = "http://qc.hiadmin.org/direction/"
+            HomePage = 'http://qc.hiadmin.org/direction/'
     else:
-        HomePage = "http://qc.hiadmin.org/direction/"
+        HomePage = 'http://qc.hiadmin.org/direction/'
 
     win = QualityCenterBrowser(nb,HomePage)
     return win
@@ -179,7 +179,7 @@ class QualityCenterBrowserApp(wx.App):
     def OnInit(self):
         # 设置浏览器窗口大小，名称等信息
         frame = wx.Frame(None, -1, self.name + version, size=(1080, 800))
-        frame.SetIcon(wx.Icon("src\QCBrowser_32.ico", wx.BITMAP_TYPE_ICO))
+        frame.SetIcon(wx.Icon('src\QCBrowser_32.ico', wx.BITMAP_TYPE_ICO))
         frame.CreateStatusBar()  # 创建状态栏
 
         ns = {}
